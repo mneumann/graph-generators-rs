@@ -1,0 +1,12 @@
+[package]
+name = "graph-generators"
+version = "0.0.1"
+authors = ["Michael Neumann <mneumann@ntecs.de>"]
+license = "MIT"
+repository = "https://github.com/mneumann/graph-generators-rs"
+description = "Graph generator algorithms"
+keywords = ["graph", "algorithm"]
+
+[dependencies]
+petgraph = "*"
+rand = "0.3"
