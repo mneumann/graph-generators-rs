@@ -1,8 +1,40 @@
-extern crate petgraph;
 extern crate rand;
 
-use petgraph::{Graph, Directed};
 use rand::{Rng};
+
+pub struct Graph {
+    pub nodes: Vec<usize>,
+    pub edges: Vec<(usize, usize)>,
+}
+
+impl Graph {
+    pub fn new() -> Graph {
+        Graph {
+            nodes: Vec::new(),
+            edges: Vec::new(),
+        }
+    }
+
+    pub fn add_node(&mut self) -> usize {
+        let node_id = self.nodes.len();
+        self.nodes.push(node_id);
+        node_id
+    }
+
+    pub fn add_edge(&mut self, edge: (usize, usize)) {
+        match edge {
+            (src, dst) => {
+                assert!(src < self.nodes.len());
+                assert!(dst < self.nodes.len());
+                self.edges.push(edge);
+            }
+        }
+    }
+
+    pub fn node_count(&self) -> usize { self.nodes.len() }
+    pub fn edge_count(&self) -> usize { self.edges.len() }
+}
+
 
 /// Generate a random, scale-free graph according to the
 /// Barabási–Albert preferential attachment model.
@@ -13,29 +45,29 @@ use rand::{Rng};
 ///
 /// TODO: Allow generation of undirected graphs.
 ///
-pub fn barabasi_albert_graph<R:Rng>(rng: &mut R, n: usize, m: usize) -> Graph<(), (), Directed> {
+pub fn barabasi_albert_graph<R:Rng>(rng: &mut R, n: usize, m: usize) -> Graph {
     assert!(n > m);
     assert!(m >= 1);
 
-    let mut g: Graph<(),(), Directed> = Graph::new();
+    let mut g = Graph::new();
 
     let mut repeated_nodes = Vec::new();
     let mut targets = Vec::new();
 
     // create m initial nodes.
     for _ in 0..m {
-        targets.push(g.add_node(()));
+        targets.push(g.add_node());
     }
 
     for _ in m..n {
         // Invariant.
         assert!(targets.len() == m);
 
-        let node = g.add_node(());
+        let node = g.add_node();
 
         // from new node, draw `m` connections to the `targets`.
         for &target in &targets[..] {
-            g.add_edge(node, target, ());
+            g.add_edge((node, target));
             repeated_nodes.push(target);
             repeated_nodes.push(node);
         }
