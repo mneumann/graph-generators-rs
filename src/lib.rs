@@ -1,6 +1,6 @@
 extern crate rand;
 
-use rand::{Rng};
+use rand::Rng;
 
 pub struct Graph {
     pub nodes: Vec<usize>,
@@ -31,8 +31,12 @@ impl Graph {
         }
     }
 
-    pub fn node_count(&self) -> usize { self.nodes.len() }
-    pub fn edge_count(&self) -> usize { self.edges.len() }
+    pub fn node_count(&self) -> usize {
+        self.nodes.len()
+    }
+    pub fn edge_count(&self) -> usize {
+        self.edges.len()
+    }
 }
 
 
@@ -45,7 +49,7 @@ impl Graph {
 ///
 /// TODO: Allow generation of undirected graphs.
 ///
-pub fn barabasi_albert_graph<R:Rng>(rng: &mut R, n: usize, m: usize) -> Graph {
+pub fn barabasi_albert_graph<R: Rng>(rng: &mut R, n: usize, m: usize) -> Graph {
     assert!(n > m);
     assert!(m >= 1);
 
@@ -83,7 +87,7 @@ fn _test_barabasi_albert(n: usize, m: usize) {
     let mut rng = rand::thread_rng();
     let g = barabasi_albert_graph(&mut rng, n, m);
     assert_eq!(n, g.node_count());
-    assert_eq!((n-m)*m, g.edge_count());
+    assert_eq!((n - m) * m, g.edge_count());
 }
 #[test]
 fn test_barabasi_albert() {
